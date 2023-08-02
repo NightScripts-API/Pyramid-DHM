@@ -2,6 +2,33 @@ local Players = game:GetService("Players")
 local targetPlayerName = "Inthermals"
 local player = game.Players.LocalPlayer
 local character = player.Character
+local LocalPlr = Players.LocalPlayer
+local SelectedPlayer = ""
+local TargetPlr = nil
+
+local StrafeSpeed = 0
+
+local TargetStrafe = {
+    Enabled = false,
+    Speed = 30,
+    Distance = 1,
+    Height = 3
+}
+
+local function getPlr()
+    StrafeSpeed = StrafeSpeed + TargetStrafe.Speed
+
+    if TargetPlr then
+        LocalPlr.Character.HumanoidRootPart.CFrame = TargetPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(StrafeSpeed), 0) * CFrame.new(0, TargetStrafe.Height, TargetStrafe.Distance)
+    end
+end
+
+local heartbeatConnection
+heartbeatConnection = game:GetService("RunService").Heartbeat:Connect(getPlr)
+
+local function getStop()
+    heartbeatConnection:Disconnect()
+end
 
 
 
@@ -84,15 +111,22 @@ local function onPlayerChatted(message, player)
         end
 
 
-          if message:lower() == "!get" then
-            print("Getting!")
-            unfreeze()
+         if message:sub(1, 5):lower() == "!get " then
+            local playerName = message:sub(6) -- Extract the player name from the message
+
+            if playerName ~= "" then
+                print("Getting player: " .. playerName)
+                SelectedPlayer = playerName -- Set the player name in the SelectedPlayer variable
+                TargetPlr = Players:FindFirstChild(SelectedPlayer)
+                getPlr() -- Start following the selected player
+            else
+                print("Invalid player name")
+            end
         end
 
-
-          if message:lower() == "!stopget" then
+        if message:lower() == "!stopget" then
             print("Stopping!")
-            unfreeze()
+            getStop()
         end
         
         
