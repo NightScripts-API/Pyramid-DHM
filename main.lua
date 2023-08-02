@@ -8,7 +8,7 @@ local character = player.Character
 -- Command Functions
 
 
-local function teleportToHost()
+local function tpHOST()
     local targetPlayer = Players:FindFirstChild(targetPlayerName)
 
     if targetPlayer then
@@ -23,7 +23,7 @@ end
 
 
 -- Function to freeze the character's movement
-local function freezeCharacter()
+local function freeze()
     if character then
         -- Store the current humanoid state
         local humanoid = character:FindFirstChild("Humanoid")
@@ -34,7 +34,7 @@ local function freezeCharacter()
 end
 
 
-local function unfreezeCharacter()
+local function unfreeze()
     if character then
         -- Store the current humanoid state
         local humanoid = character:FindFirstChild("Humanoid")
@@ -61,36 +61,35 @@ end
 local function onPlayerChatted(message, player)
     if player.Name == targetPlayerName then
         print(string.format("[%s]: %s", player.Name, message))
+        
+        -- Command Yeti v2.7 By Badovh
+        
+        
         if message:lower() == "!bring" then
             print("Bringing Account!")
-            teleportToHost()
+            tpHOST()
         end
-    end
-end
-
-
-
-
-local function onPlayerChatted(message, player)
-    if player.Name == targetPlayerName then
-        print(string.format("[%s]: %s", player.Name, message))
-        if message:lower() == "!freeze" then
+        
+        
+          if message:lower() == "!freeze" then
             print("Freezing Account!")
-            freezeCharacter()
+            freeze()
         end
+        
+        
+          if message:lower() == "!unfreeze" then
+            print("Unfreezing Account!")
+            unfreeze()
+        end
+        
+        
+        
     end
 end
 
 
-local function onPlayerChatted(message, player)
-    if player.Name == targetPlayerName then
-        print(string.format("[%s]: %s", player.Name, message))
-        if message:lower() == "!unfreeze" then
-            print("Freezing Account!")
-            unfreezeCharacter()
-        end
-    end
-end
+
+
 
 
 
