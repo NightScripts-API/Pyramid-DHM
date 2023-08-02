@@ -5,6 +5,7 @@ local character = player.Character
 
 
 
+
 -- Command Functions
 
 
@@ -79,6 +80,18 @@ local function onPlayerChatted(message, player)
         
           if message:lower() == "!unfreeze" then
             print("Unfreezing Account!")
+            unfreeze()
+        end
+
+
+          if message:lower() == "!get" then
+            print("Getting!")
+            unfreeze()
+        end
+
+
+          if message:lower() == "!stopget" then
+            print("Stopping!")
             unfreeze()
         end
         
