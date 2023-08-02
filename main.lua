@@ -1,5 +1,12 @@
 local Players = game:GetService("Players")
 local targetPlayerName = "Inthermals"
+local player = game.Players.LocalPlayer
+local character = player.Character
+
+
+
+-- Command Functions
+
 
 local function teleportToHost()
     local targetPlayer = Players:FindFirstChild(targetPlayerName)
@@ -15,6 +22,42 @@ end
 
 
 
+-- Function to freeze the character's movement
+local function freezeCharacter()
+    if character then
+        -- Store the current humanoid state
+        local humanoid = character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid:ChangeState(Enum.HumanoidStateType.Seated)
+        end
+    end
+end
+
+
+local function unfreezeCharacter()
+    if character then
+        -- Store the current humanoid state
+        local humanoid = character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid:ChangeState(Enum.HumanoidStateType.None) -- Change back to "None" to enable movement.
+        end
+    end
+end
+
+
+
+
+
+
+
+
+
+
+-- Command Executer
+
+
+
+
 local function onPlayerChatted(message, player)
     if player.Name == targetPlayerName then
         print(string.format("[%s]: %s", player.Name, message))
@@ -24,6 +67,44 @@ local function onPlayerChatted(message, player)
         end
     end
 end
+
+
+
+
+local function onPlayerChatted(message, player)
+    if player.Name == targetPlayerName then
+        print(string.format("[%s]: %s", player.Name, message))
+        if message:lower() == "!freeze" then
+            print("Freezing Account!")
+            freezeCharacter()
+        end
+    end
+end
+
+
+local function onPlayerChatted(message, player)
+    if player.Name == targetPlayerName then
+        print(string.format("[%s]: %s", player.Name, message))
+        if message:lower() == "!unfreeze" then
+            print("Freezing Account!")
+            unfreezeCharacter()
+        end
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Control Jet
 
 Players.PlayerAdded:Connect(function(player)
     if player.Name == targetPlayerName then
