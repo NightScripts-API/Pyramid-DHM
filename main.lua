@@ -55,7 +55,7 @@ local title = Instance.new("TextLabel")
 title.Name = "Title"
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
-title.Text = "Pyramid v1.7"
+title.Text = "Pyramid v1.8"
 title.TextColor3 = Color3.new(1, 1, 1)
 title.TextSize = 20
 title.Position = UDim2.new(0.5, -100, 0, 5)
@@ -440,7 +440,67 @@ local function tpHOST()
         local targetCharacter = targetPlayer.Character
         if targetCharacter then
             local targetPosition = targetCharacter.PrimaryPart.Position
-            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+
+
+
+
+			local function teleportTo(position)
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        character:SetPrimaryPartCFrame(CFrame.new(position))
+    end
+end
+
+local function getPreviousPosition()
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        return character.PrimaryPart.CFrame.Position
+    end
+end
+
+local function handleTeleporting()
+ 
+    local prevPosition = getPreviousPosition()
+
+    -- Freeze the player
+    local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+    if humanoid then
+        humanoid.PlatformStand = true
+    end
+
+    -- Teleport the player 500 units away
+    local teleportPosition = targetCharacter.PrimaryPart.Position
+    teleportTo(teleportPosition)
+
+    -- Wait for 1 second (you can adjust the duration as needed)
+    wait(1)
+
+    -- Attempt to teleport the player back to the previous position
+    repeat
+        teleportTo(prevPosition)
+        wait()
+    until (game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position - prevPosition).Magnitude <= 1
+
+    -- Check if the player is still alive, if not, wait for them to respawn
+    while game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.Health <= 0 do
+        wait()
+    end
+
+    -- Unfreeze the player after teleporting back and respawn
+    if humanoid then
+        humanoid.PlatformStand = false
+    end
+
+    -- Enable checking armor again once the armor value is above 10
+end
+
+handleTeleporting()
+
+
+			
+
+
+			
         end
     end
 end
@@ -449,24 +509,12 @@ end
 
 -- Function to freeze the character's movement
 local function freeze()
-    if character then
-        -- Store the current humanoid state
-        local humanoid = character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid:ChangeState(Enum.HumanoidStateType.Seated)
-        end
-    end
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 end
 
 
 local function unfreeze()
-    if character then
-        -- Store the current humanoid state
-        local humanoid = character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid:ChangeState(Enum.HumanoidStateType.None) -- Change back to "None" to enable movement.
-        end
-    end
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end
 
 
@@ -525,6 +573,22 @@ local function onPlayerChatted(message, player)
             print("Stopping!")
             getStop()
         end
+
+
+
+		    if message:sub(1, 5):lower() == "!say " then
+            local text = message:sub(6) -- Extract the player name from the message
+
+            if text ~= "" then
+                print("Saying player: " .. playerName)
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(text, "All")
+            else
+                print("Invalid player name")
+            end
+        end
+
+
+        
         
         
         
