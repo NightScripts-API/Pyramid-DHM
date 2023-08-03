@@ -580,7 +580,7 @@ local function onPlayerChatted(message, player)
             local text = message:sub(6) -- Extract the player name from the message
 
             if text ~= "" then
-                print("Saying player: " .. playerName)
+                print("Saying player: " .. text)
                game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(text, "All")
             else
                 print("Invalid player name")
