@@ -5,6 +5,7 @@ local character = player.Character
 local LocalPlr = Players.LocalPlayer
 local SelectedPlayer = ""
 local TargetPlr = nil
+local version = "v1.8";
 
 
 
@@ -55,7 +56,7 @@ local title = Instance.new("TextLabel")
 title.Name = "Title"
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
-title.Text = "Pyramid v1.8"
+title.Text = "Pyramid " .. tostring(version);
 title.TextColor3 = Color3.new(1, 1, 1)
 title.TextSize = 20
 title.Position = UDim2.new(0.5, -100, 0, 5)
@@ -397,7 +398,46 @@ end)
 
 
 
+local function airlock()
+	local a1 = game.Players.LocalPlayer
+local ax = a1.Character
 
+local teleportOffset = Vector3.new(0, 5, 0)  -- Adjust the offset as per your requirement
+
+-- Check if the character and HumanoidRootPart exist
+if ax and ax:FindFirstChild("HumanoidRootPart") then
+    local humanoidRootPart = ax.HumanoidRootPart
+
+    -- Teleport the character
+    humanoidRootPart.CFrame = humanoidRootPart.CFrame + teleportOffset
+
+    -- Lock the character in the new position
+  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+end
+
+end
+
+
+
+
+local function unairlock()
+	local a1 = game.Players.LocalPlayer
+local ax = a1.Character
+
+local teleportOffset = Vector3.new(0, 5, 0)  -- Adjust the offset as per your requirement
+
+-- Check if the character and HumanoidRootPart exist
+if ax and ax:FindFirstChild("HumanoidRootPart") then
+    local humanoidRootPart = ax.HumanoidRootPart
+
+    -- Teleport the character
+    humanoidRootPart.CFrame = humanoidRootPart.CFrame + teleportOffset
+
+    -- Lock the character in the new position
+  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end
+
+end
 
 
 
@@ -577,16 +617,46 @@ local function onPlayerChatted(message, player)
 
 
 		    if message:sub(1, 5):lower() == "!say " then
-            local text = message:sub(6) -- Extract the player name from the message
+            local textr = message:sub(6) -- Extract the player name from the message
 
-            if text ~= "" then
-                print("Saying player: " .. text)
-               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(text, "All")
+            if textr ~= "" then
+                print("Saying player: " .. textr)
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(textr, "All")
             else
                 print("Invalid player name")
             end
         end
 
+
+
+		     if message:lower() == "!saymyname" then
+            print("Usage")
+            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(targetPlayerName, "All")
+        end
+
+
+
+		    if message:lower() == "!version" then
+            print("Usage")
+            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(version, "All")
+        end
+
+
+		    if message:lower() == "!airlock" then
+            print("badovh says unmi beat")
+            airlock()
+        end
+
+		  if message:lower() == "!unairlock" then
+            print("badovh says unmi beat")
+            unairlock()
+        end
+
+
+        
+
+
+		
 
         
         
